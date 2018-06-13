@@ -564,6 +564,7 @@ variation in the flux of the star itself - i.e., its flux is not constant, and t
 kind of 1/f noise).
 
 ![alt text](figs/fig1.png "Figure 1")
+
 **Fig. 1** Light curve for KIC 008191672 (Kepler flux measurements).
 
 The `loadLightCurve` function has an option to normalise and whiten the data (i.e., 
@@ -579,6 +580,7 @@ try that (after closing the previous plot):
 Fig. 2 shows the result that you should get. 
 
 ![alt text](figs/fig2.png "Figure 2")
+
 **Fig. 2** Normalised and whitened light curve for KIC 8191672.
 
 You can see this looks much more like the idealised plots / animations in the lecture

@@ -22,8 +22,8 @@ does
 
 should (usually) be copied and pasted into files where appropriate, as explained below.
 
-## Getting started with git
 
+## Getting started with git
 If this is the first time you've used git, you may want to set these options - these 
 would be used across all repositories (e.g., those on github, gitlab, sourceforge, etc.,
 as well as locally on your machine). For example,
@@ -128,45 +128,74 @@ Our changes are only saved to the repository once we commit them. We can do this
 
     % git commit -m "Added README.md file" 
 
-Here the -m switch is followed by a message. Alternatively you can commit changes with git commit -a, which will then open a text editor (vim is the default, but this can be changed) in which you can type your commit message. Either way, this allows you to keep track of the changes you made between each revision of the files in the repository. You can see these by doing 
-% git log
-> commit 47d7d7f1af97f23e1530114c9c5375e032a935db
-> Author: Matt Hilton <mattyowl@gmail.com>
-> Date: Mon Jun 11 09:19:36 2018 +0200
-> 
-> Added README.md file 
-Git has many other commands, which you can see using 
-% git help 
-You can use this to get detailed information on each command, e.g., the commit command we just used: 
-% git help commit 
-will tell you about the -m and -a command line switches (among others).
-Creating a python package
-We will need to add a bunch of other files and directories to set up our Planethunter application. This is the layout we'll use for our python application, with a brief description of what each file will (ultimately) do: 
+Here the `-m` switch is followed by a message. Alternatively you can commit changes
+with git commit `-a`, which will then open a text editor (vim is the default, but 
+this can be changed) in which you can type your commit message. Either way, this 
+allows you to keep track of the changes you made between each revision of the files
+in the repository. You can see these by doing 
+
+    % git log
+    > commit 47d7d7f1af97f23e1530114c9c5375e032a935db
+    > Author: Matt Hilton <mystery@email.address>
+    > Date: Mon Jun 11 09:19:36 2018 +0200
+    > 
+    > Added README.md file 
+
+Git has many other commands, which you can see using
+ 
+    % git help 
+
+You can use this to get detailed information on each command, e.g., the `commit` 
+command we just used: 
+
+    % git help commit 
+
+will tell you about the `-m` and `-a` command line switches (among others).
+
+
+## Creating a python package
+We will need to add a bunch of other files and directories to set up our Planethunter 
+application. This is the layout we'll use for our Python application, with a brief 
+description of what each file will (ultimately) do: 
 
 Directories:
-bin/ [this will contain our executable script that will ultimately be run by the user of our application]
-planethunter/ [evenually this will contain .py files used by our application] 
-Files:
-bin/planethunter [this will be our executable (python) script that the user of our application runs]
-planethunter/__init__.py [note the double underscore __]
-planethunter/lightCurveTools.py [eventually this will contain code for reading and plotting light curves]
-setup.py [this will be the install script for our python application]
-MANIFEST.in [this is a file that will be used by the setup.py script later]
-README.md [you should have already made this one - see above] 
+> `bin/` [this will contain our executable script that will ultimately be run by the user of our application]
+> `planethunter/` [evenually this will contain .py files used by our application] 
 
-First, create the bin/ and planethunter/ directories, and then we'll create placeholder files. Let's look at each of these in turn... 
-bin/planethunter
+Files:
+> `bin/planethunter` [this will be our executable (python) script that the user of our application runs]
+> `planethunter/__init__.py` [note the double underscore `__`]
+> `planethunter/lightCurveTools.py` [eventually this will contain code for reading and plotting light curves]
+> `setup.py` [this will be the install script for our Python application]
+> `MANIFEST.in` [this is a file that will be used by the `setup.py` script later]
+> `README.md` [you should have already made this one - see above] 
+
+First, create the `bin/` and `planethunter/` directories, and then we'll create 
+placeholder files. Let's look at each of these in turn... 
+
+### `bin/planethunter`
 This will be our executable (python) script. Place the following in it for now: 
 
+```python
 #!/usr/bin/env python3
 """ 
 Planethunter 
 """
 print("This doesn't do anything yet!")
+```
 
-The first line begining #! (https://en.wikipedia.org/wiki/Shebang_(Unix)) tells the (Unix-like) operating system how to run the script: /usr/bin/env python3 finds the location of the python3 interpreter on the system and executes it (by convention, /usr/bin/env python should find and execute the python 2.x interpreter - we aren't using that for this exercise, but it ought to also work). 
-The text inside the triple quotes """ """ is a docstring. You should use these extensively to document your code, in particular for functions and classes (we will return to this later). Docstrings are what you see when you use the help command inside the python3 or ipython interpreter. 
-planethunter/__init__.py
+The first line begining `#!` (https://en.wikipedia.org/wiki/Shebang\_(Unix)) tells the 
+(Unix-like) operating system how to run the script: `/usr/bin/env python3` finds the 
+location of the `python3` interpreter on the system and executes it (by convention, 
+`/usr/bin/env python` should find and execute the Python 2.x interpreter - we aren't 
+using that for this exercise, but it ought to also work).
+ 
+The text inside the triple quotes `""" """` is a docstring. You should use these 
+extensively to document your code, in particular for functions and classes (we will 
+return to this later). Docstrings are what you see when you use the `help` command 
+inside the `python3` or `ipython` interpreter.
+ 
+### `planethunter/__init__.py`
 This initializes the planethunter python package, and allows sub-directories (which we don't have, but may want to add later) to be identified as modules within the package (see https://docs.python.org/3/tutorial/modules.html#packages). Place the following in it for now: 
 
 """ 

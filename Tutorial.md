@@ -1,13 +1,16 @@
 # Software Carpentry Lab - AIMS-DISCnet 2018
 
-###Matt Hilton - University of KwaZulu-Natal
+### Matt Hilton - University of KwaZulu-Natal
 
-This tutorial will take you through the process of setting up a command-line based Python application that any user can install, using git for version control. Here, we develop a code that can download light curve data obtained by the Kepler Space Telescope, in which we will search for signs of transiting extrasolar planets.
+This tutorial will take you through the process of setting up a command-line based Python
+application that any user can install, using git for version control. Here, we develop a
+code that can download light curve data obtained by the Kepler Space Telescope, in which
+we will search for signs of transiting extrasolar planets.
 
 Key:
 
-    % you type something`
-    > console output that you should get back`
+    % you type something
+    > console output that you should get back
 
 Material that appears
 
@@ -20,27 +23,33 @@ does
 should (usually) be copied and pasted into files where appropriate, as explained below.
 
 ## Getting started with git
-If this is the first time you've used git, you may want to set these options - these would be used across all repositories (e.g., those on github, gitlab, sourceforge, etc., as well as locally on your machine). For example,
 
-```% git config --global user.name "Your Name"```
+If this is the first time you've used git, you may want to set these options - these 
+would be used across all repositories (e.g., those on github, gitlab, sourceforge, etc.,
+as well as locally on your machine). For example,
 
-```% git config --global user.email "your@email.address"```
+    % git config --global user.name "Your Name"
+    % git config --global user.email "your@email.address"
  
-We'll first create a bare, local repository. Repositories live in directories, so we will make one first - this will eventually contain all of our Python code for this project. Move into the directory when you're done.
+We'll first create a bare, local repository. Repositories live in directories, so we will 
+make one first - this will eventually contain all of our Python code for this project. 
+Move into the directory when you're done.
 
-```% mkdir planethunter```
-
-```% cd planethunter```
+    % mkdir planethunter
+    % cd planethunter
 
 Now let's make the bare repository by using the git init command:
 
     % git init
-> Initialized empty Git repository in /home/matty/Documents/Teaching/ZA-DISCnet-2018/planethunter/.git/ 
+    > Initialized empty Git repository in /home/matty/Documents/Teaching/ZA-DISCnet-2018/planethunter/.git/ 
 
-Git stores its data in a hidden folder called .git - to see this, you must use the ls -a command 
-% ls -a
-> . .. .git 
-The git status command tells you whether you have uncommitted changes to your repository (or not), and what branch you are on. We'll discuss why branches are useful later - "master" here is the default. 
+Git stores its data in a hidden folder called .git - to see this, you must use the 
+`ls -a` command 
+
+    % ls -a
+    > . .. .git 
+
+The `git status` command tells you whether you have uncommitted changes to your repository (or not), and what branch you are on. We'll discuss why branches are useful later - "master" here is the default. 
 % git status
 > On branch master
 > 

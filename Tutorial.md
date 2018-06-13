@@ -563,7 +563,7 @@ variation in the flux of the star itself - i.e., its flux is not constant, and t
 (scatter around the average) is not white (the average is moving - i.e., there is some 
 kind of 1/f noise).
 
-![alt text](blob/master/figs/fig1.png "Figure 1")
+![alt text](figs/fig1.png "Figure 1")
 
 The `loadLightCurve` function has an option to normalise and whiten the data (i.e., 
 flatten out the varying flux of the star to make it easier to find the transits due to 

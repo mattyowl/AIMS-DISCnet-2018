@@ -159,16 +159,18 @@ application. This is the layout we'll use for our Python application, with a bri
 description of what each file will (ultimately) do: 
 
 Directories:
-> `bin/` [this will contain our executable script that will ultimately be run by the user of our application]
-> `planethunter/` [evenually this will contain .py files used by our application] 
+
+* `bin/` [this will contain our executable script that will ultimately be run by the user of our application]
+* `planethunter/` [evenually this will contain .py files used by our application] 
 
 Files:
-> `bin/planethunter` [this will be our executable (python) script that the user of our application runs]
-> `planethunter/__init__.py` [note the double underscore `__`]
-> `planethunter/lightCurveTools.py` [eventually this will contain code for reading and plotting light curves]
-> `setup.py` [this will be the install script for our Python application]
-> `MANIFEST.in` [this is a file that will be used by the `setup.py` script later]
-> `README.md` [you should have already made this one - see above] 
+
+* `bin/planethunter` [this will be our executable (python) script that the user of our application runs]
+* `planethunter/__init__.py` [note the double underscore `__`]
+* `planethunter/lightCurveTools.py` [eventually this will contain code for reading and plotting light curves]
+* `setup.py` [this will be the install script for our Python application]
+* `MANIFEST.in` [this is a file that will be used by the `setup.py` script later]
+* `README.md` [you should have already made this one - see above] 
 
 First, create the `bin/` and `planethunter/` directories, and then we'll create 
 placeholder files. Let's look at each of these in turn... 
@@ -178,17 +180,21 @@ This will be our executable (python) script. Place the following in it for now:
 
 ```python
 #!/usr/bin/env python3
+
 """ 
+
 Planethunter 
+
 """
+
 print("This doesn't do anything yet!")
 ```
 
-The first line begining `#!` (https://en.wikipedia.org/wiki/Shebang\_(Unix)) tells the 
-(Unix-like) operating system how to run the script: `/usr/bin/env python3` finds the 
-location of the `python3` interpreter on the system and executes it (by convention, 
-`/usr/bin/env python` should find and execute the Python 2.x interpreter - we aren't 
-using that for this exercise, but it ought to also work).
+The first line begining `#!` ([called a shebang](https://en.wikipedia.org/wiki/Shebang_(Unix))) 
+tells the (Unix-like) operating system how to run the script: `/usr/bin/env python3` 
+finds the location of the `python3` interpreter on the system and executes it (by 
+convention, `/usr/bin/env python` should find and execute the Python 2.x interpreter - 
+we aren't using that for this exercise, but it ought to also work).
  
 The text inside the triple quotes `""" """` is a docstring. You should use these 
 extensively to document your code, in particular for functions and classes (we will 
@@ -196,25 +202,52 @@ return to this later). Docstrings are what you see when you use the `help` comma
 inside the `python3` or `ipython` interpreter.
  
 ### `planethunter/__init__.py`
-This initializes the planethunter python package, and allows sub-directories (which we don't have, but may want to add later) to be identified as modules within the package (see https://docs.python.org/3/tutorial/modules.html#packages). Place the following in it for now: 
+This initializes the planethunter python package, and allows sub-directories (which
+we don't have, but may want to add later) to be identified as modules within the 
+package (see https://docs.python.org/3/tutorial/modules.html#packages). Place the
+following in it for now: 
 
+```python
 """ 
+
 Planethunter - a python application for playing with Kepler data 
+
 """
+
 from . import lightCurveTools 
+
 __version__ = 'git'
+```
 
-Again, this starts with a docstring. It then imports the lightCurveTools module (which we'll create next), so that it is possible to do import planethunter and then access planethunter.lightCurveTools. Finally, we have __version__, which is the standard way of declaring the version number of your module in Python (see https://www.python.org/dev/peps/pep-0396/). For now we have written simply 'git', but this could easily say, e.g., '1.14.1' if that was the version number of the code that we decided to release. 
-planethunter/lightCurveTools.py
-This will contain our routines for actually doing analysis of light curves. Later, we will add routines to load them and plot them. For now, let's just create a file with a not-very-informative docstring
+Again, this starts with a docstring. It then imports the `lightCurveTools` module (which
+we'll create next), so that it is possible to do `import planethunter` and then access 
+`planethunter.lightCurveTools`. Finally, we have `__version__`, which is the standard 
+way of declaring the version number of your module in Python (see https://www.python.org/dev/peps/pep-0396/). 
+For now we have written simply 'git', but this could easily say, e.g., '1.14.1' if that
+was the version number of the code that we decided to release. 
 
-""" 
-Tools for handling Kepler light curves - part of Planethunter 
+### `planethunter/lightCurveTools.py`
+This will contain our routines for actually doing analysis of light curves. Later, we 
+will add routines to load them and plot them. For now, let's just create a file with a
+not-very-informative docstring
+
+```python
 """
 
-setup.py
-This is the standard name for the script used to install Python packages, and these days it is usually handled by the setuptools package (https://setuptools.readthedocs.io/en/latest/). The setup.py script is very powerful, and can be made to, e.g., compile and build C extensions from source code. It can even handle and install dependencies (via pip; https://pypi.org/project/pip/). For now, let's just put in the most basic thing we can, which is suitable for a pure python package like Planethunter: 
+Tools for handling Kepler light curves - part of Planethunter 
 
+"""
+```
+
+### `setup.py`
+This is the standard name for the script used to install Python packages, and these days 
+it is usually handled by the [`setuptools` package](https://setuptools.readthedocs.io/en/latest/). 
+The `setup.py` script is very powerful, and can be made to, e.g., compile and build C 
+extensions from source code. It can even handle and install dependencies (via `pip`; 
+https://pypi.org/project/pip/). For now, let's just put in the most basic thing we can, 
+which is suitable for a pure python package like Planethunter: 
+
+```python
 # Planethunter install script 
 
 import os
@@ -230,73 +263,113 @@ setup(name='planethunter',
       packages=['planethunter'],
       scripts=['bin/planethunter'], 
 )
+```
 
-Now commit these changes to your git repository, remembering to add the files first (use git status to check that you have done so, if you're unsure). 
-Installation, running the code, and making a source code distribution
-We now have a code that does nothing, but which we can install. There are several ways to accomplish this, depending on your OS and whether you have root access or not, but the following should work: 
-% python3 setup.py install --user
-> running install
-> running build
-> running build_py
-> creating build/lib
-> creating build/lib/planethunter
-> copying planethunter/__init__.py -> build/lib/planethunter
-> copying planethunter/lightCurveTools.py -> build/lib/planethunter
-> running build_scripts
-> creating build/scripts-3.5
-> copying and adjusting bin/planethunter -> build/scripts-3.5
-> changing mode of build/scripts-3.5/planethunter from 664 to 775
-> running install_lib
-> creating /home/matty/.local/lib/python3.5/site-packages/planethunter
-> copying build/lib/planethunter/__init__.py -> /home/matty/.local/lib/python3.5/site-packages/planethunter
-> copying build/lib/planethunter/lightCurveTools.py -> /home/matty/.local/lib/python3.5/site-packages/planethunter
-> byte-compiling /home/matty/.local/lib/python3.5/site-packages/planethunter/__init__.py to __init__.cpython-35.pyc
-> byte-compiling /home/matty/.local/lib/python3.5/site-packages/planethunter/lightCurveTools.py to lightCurveTools.cpython-35.pyc
-> running install_scripts
-> copying build/scripts-3.5/planethunter -> /home/matty/.local/bin
-> changing mode of /home/matty/.local/bin/planethunter to 775
-> running install_egg_info
-> Writing /home/matty/.local/lib/python3.5/site-packages/planethunter-git.egg-info 
-The output from running the command tells you exactly what it has done: it has installed the package under $HOME/.local (i.e., in your home directory). Assuming that this has worked as expected, then you should be able to change to any other directory on your system, and then run the planethunter command, e.g., 
-% cd
-% planethunter
-> This doesn't do anything yet! 
-(Note: the above works on Ubuntu, but does not work on the AIMS lab computers - first you must type export PATH=$HOME/.local/bin:$PATH in the terminal from which you want to run planethunter)
-Not very exciting... but the power of this approach is that it provides you with a way to distribute your software to your friends (or easily install it on other machines that you want to run it on). To do that, let's create another file, and add it to our git repository while we're at it. 
-MANIFEST.in
-The only reason to make this file at this stage is because we've used a non-standard name for the README file. You can use MANIFEST.in to include other directories or content in the source archive that will be built by setup.py (in a moment) that isn't specified in the setup.py file itself (e.g., a directory containing documentation or examples of how to use your code). For now, just paste in:
+Now commit these changes to your `git` repository, remembering to add the files first
+(use `git status` to check that you have done so, if you're unsure).
 
+## Installation, running the code, and making a source code distribution
+We now have a code that does nothing, but which we can install. There are several ways
+to accomplish this, depending on your OS and whether you have root access or not, but
+the following should work: 
+
+    % python3 setup.py install --user
+    > running install
+    > running build
+    > running build_py
+    > creating build/lib
+    > creating build/lib/planethunter
+    > copying planethunter/__init__.py -> build/lib/planethunter
+    > copying planethunter/lightCurveTools.py -> build/lib/planethunter
+    > running build_scripts
+    > creating build/scripts-3.5
+    > copying and adjusting bin/planethunter -> build/scripts-3.5
+    > changing mode of build/scripts-3.5/planethunter from 664 to 775
+    > running install_lib
+    > creating /home/matty/.local/lib/python3.5/site-packages/planethunter
+    > copying build/lib/planethunter/__init__.py -> /home/matty/.local/lib/python3.5/site-packages/planethunter
+    > copying build/lib/planethunter/lightCurveTools.py -> /home/matty/.local/lib/python3.5/site-packages/planethunter
+    > byte-compiling /home/matty/.local/lib/python3.5/site-packages/planethunter/__init__.py to __init__.cpython-35.pyc
+    > byte-compiling /home/matty/.local/lib/python3.5/site-packages/planethunter/lightCurveTools.py to lightCurveTools.cpython-35.pyc
+    > running install_scripts
+    > copying build/scripts-3.5/planethunter -> /home/matty/.local/bin
+    > changing mode of /home/matty/.local/bin/planethunter to 775
+    > running install_egg_info
+    > Writing /home/matty/.local/lib/python3.5/site-packages/planethunter-git.egg-info 
+    
+The output from running the command tells you exactly what it has done: it has installed 
+the package under `$HOME/.local` (i.e., in your home directory). Assuming that this has
+worked as expected, then you should be able to change to any other directory on your 
+system, and then run the `planethunter` command, e.g.,
+
+    % cd
+    % planethunter
+    > This doesn't do anything yet! 
+
+(**Note:** the above works on Ubuntu, but does not work on the AIMS lab computers - first
+you must type `export PATH=$HOME/.local/bin:$PATH` in the terminal from which you want to
+run planethunter. If you want to avoid doing this step every time, add this to your 
+`.bashrc` file).
+
+Not very exciting... but the power of this approach is that it provides you with a way
+to distribute your software to your friends (or easily install it on other machines that
+you want to run it on). To do that, let's create another file, and add it to our git 
+repository while we're at it. 
+
+### `MANIFEST.in`
+The only reason to make this file at this stage is because we've used a non-standard name
+for the README file. You can use `MANIFEST.in` to include other directories or content in
+the source archive that will be built by `setup.py` (in a moment) that isn't specified in
+the setup.py file itself (e.g., a directory containing documentation or examples of how 
+to use your code). For now, just paste in:
+
+```
 include README.md
+```
 
 Now add and commit it to the git repository 
-% git add MANIFEST.in
-% git commit -m "Added MANIFEST.in" 
-We can now make a source archive (.tar.gz) that we can copy elsewhere and use to install our code: 
-% python3 setup.py sdist
-> running sdist
-> running check
-> warning: check: missing required meta-data: url
-> 
-> warning: sdist: standard file not found: should have one of README, README.txt
-> 
-> reading manifest template 'MANIFEST.in'
-> writing manifest file 'MANIFEST'
-> creating planethunter-git
-> creating planethunter-git/bin
-> creating planethunter-git/planethunter
-> making hard links in planethunter-git...
-> hard linking README.md -> planethunter-git
-> hard linking setup.py -> planethunter-git
-> hard linking bin/planethunter -> planethunter-git/bin
-> hard linking planethunter/__init__.py -> planethunter-git/planethunter
-> hard linking planethunter/lightCurveTools.py -> planethunter-git/planethunter
-> Creating tar archive
-> removing 'planethunter-git' (and everything under it) 
-This complains that we don't have a README file (we have README.md instead) - but we can ignore that. You should find that a dist directory (short for 'distribution') has appeared, and contains a file called planethunter-git.tar.gz. This is a source archive that you can distribute to your friends, to share your exciting and useful code (this is also the kind of file that you could eventually upload to the Python Package Index: https://pypi.org/). 
-Now we should do something to make our application actually useful... 
-Adding more code
-Let's add some routines to lightCurveTools.py that will allow us to do something useful with the data. Here is the revised code:
 
+    % git add MANIFEST.in
+    % git commit -m "Added MANIFEST.in" 
+
+We can now make a source archive (.tar.gz) that we can copy elsewhere and use to install
+our code: 
+
+    % python3 setup.py sdist
+    > running sdist
+    > running check
+    > warning: check: missing required meta-data: url
+    > 
+    > warning: sdist: standard file not found: should have one of README, README.txt
+    > 
+    > reading manifest template 'MANIFEST.in'
+    > writing manifest file 'MANIFEST'
+    > creating planethunter-git
+    > creating planethunter-git/bin
+    > creating planethunter-git/planethunter
+    > making hard links in planethunter-git...
+    > hard linking README.md -> planethunter-git
+    > hard linking setup.py -> planethunter-git
+    > hard linking bin/planethunter -> planethunter-git/bin
+    > hard linking planethunter/__init__.py -> planethunter-git/planethunter
+    > hard linking planethunter/lightCurveTools.py -> planethunter-git/planethunter
+    > Creating tar archive
+    > removing 'planethunter-git' (and everything under it) 
+
+This complains that we don't have a `README` file (we have `README.md` instead) - but we
+can ignore that. You should find that a `dist` directory (short for 'distribution') has
+appeared, and contains a file called `planethunter-git.tar.gz`. This is a source archive
+that you can distribute to your friends, to share your exciting and useful code (this is
+also the kind of file that you could eventually upload to the Python Package Index: 
+https://pypi.org/). 
+
+Now we should do something to make our application actually useful... 
+
+## Adding more code
+Let's add some routines to `lightCurveTools.py` that will allow us to do something useful
+with the data. Here is the revised code:
+
+```python
 """
 
 Tools for handling Kepler light curves - part of Planethunter
@@ -435,39 +508,73 @@ def loadLightCurve(KICID, whiten = False, medianWindowDays = 1.0,
         
     return timeArr, fluxArr, fluxErrArr
 
-Notice again that we provide a docstring for each function. This may not be the greatest documentation in the world (or the greatest code), but it's far better than nothing, and we can fix it later if we want.
-Copy and paste the code above into lightCurveTools.py, and check that you can install the code without any errors (i.e. % python3 setup.py install --user). Don't commit these changes to your git repository yet - first you should check to see that the code works as expected (you should never check in code that you know is broken, especially if you are working on a project with other people). 
-The new routines won't allow our executable script (planethunter) to do anything as yet, but we can test out our lightCurveTools module by using IPython interactively. Change to a directory outside of your git repository (e.g., your home directory), and start up IPython. We'll then use our new Python module to fetch a light curve for the star KIC 8191672, around which the planet Kepler-5b is found (e.g., http://www.openexoplanetcatalogue.com/planet/Kepler-5%20b/): 
-% ipython3
-> Python 3.5.2 (default, Nov 23 2017, 16:37:01) 
-> Type "copyright", "credits" or "license" for more information. 
-> IPython 2.4.1 -- An enhanced Interactive Python.
-> ? -> Introduction and overview of IPython's features.
-> %quickref -> Quick reference.
-> help -> Python's own help system.
-> object? -> Details about 'object', use 'object??' for extra details. 
+```
 
-% from planethunter import lightCurveTools as lct 
-% lct.fetchLightCurveData(8191672)
-> ... downloading from http://archive.stsci.edu/pub/kepler/lightcurves/0081/008191672/kplr008191672-2010078095331_llc.fits ...
-> Out[2]: True 
-If, as above, lct.fetchLightCurveData returned True, then you should find a KeplerCache directory containing a .fits table file has appeared in the current directory.
-% ls KeplerCache
-> 008191672.fits 
+Notice again that we provide a docstring for each function. This may not be the greatest 
+documentation in the world (or the greatest code), but it's far better than nothing, and
+we can fix it later if we want. 
+
+Copy and paste the code above into `lightCurveTools.py`, and check that you can install 
+the code without any errors (i.e. `% python3 setup.py install --user`). Don't commit 
+these changes to your git repository yet - first you should check to see that the code
+works as expected (you should never check in code that you know is broken, especially if
+you are working on a project with other people). 
+
+The new routines won't allow our executable script (`planethunter`) to do anything as 
+yet, but we can test out our `lightCurveTools` module by using IPython interactively. 
+Change to a directory outside of your git repository (e.g., your home directory), and 
+start up IPython. We'll then use our new Python module to fetch a light curve for the
+star KIC 8191672, around which the planet Kepler-5b is found (e.g., 
+http://www.openexoplanetcatalogue.com/planet/Kepler-5%20b/): 
+
+    % ipython3
+    > Python 3.5.2 (default, Nov 23 2017, 16:37:01) 
+    > Type "copyright", "credits" or "license" for more information. 
+    > IPython 2.4.1 -- An enhanced Interactive Python.
+    > ? -> Introduction and overview of IPython's features.
+    > %quickref -> Quick reference.
+    > help -> Python's own help system.
+    > object? -> Details about 'object', use 'object??' for extra details. 
+
+    % from planethunter import lightCurveTools as lct 
+    % lct.fetchLightCurveData(8191672)
+    > ... downloading from http://archive.stsci.edu/pub/kepler/lightcurves/0081/008191672/kplr008191672-2010078095331_llc.fits ...
+    > Out[2]: True 
+
+If, as above, `lct.fetchLightCurveData` returned True, then you should find a 
+`KeplerCache` directory containing a .fits table file has appeared in the current 
+directory.
+
+    % ls KeplerCache
+    > 008191672.fits 
+
 You can also try out the routine for loading the data, and plot it while inside the IPython session. 
-% timeArr, fluxArr, fluxErrArr=lct.loadLightCurve(8191672) 
-% import pylab as plt 
-% plt.ion() 
-% plt.plot(timeArr, fluxArr, '.')
-% plt.xlabel("Time (days)")
-% plt.ylabel("Flux")
-This should produce a plot like this Fig. 1 below. The dips every ~3.5 days are due to a planet (Kepler-5b) passing in front of the star. Notice however that there is longer term variation in the flux of the star itself - i.e., its flux is not constant, and the noise (scatter around the average) is not white (the average is moving - i.e., there is some kind of 1/f noise).
 
-The loadLightCurve function has an option to normalise and whiten the data (i.e., flatten out the varying flux of the star to make it easier to find the transits due to the planet). It does this by dividing the light curve through by a running median. Let's try that (after closing the previous plot): 
-% timeArr, fluxArr, fluxErrArr=lct.loadLightCurve(8191672, whiten = True) 
-% plt.plot(timeArr, fluxArr, '.')
-% plt.xlabel("Time (days)")
-% plt.ylabel("Normalised Flux")
+    % timeArr, fluxArr, fluxErrArr=lct.loadLightCurve(8191672) 
+    % import pylab as plt 
+    % plt.ion() 
+    % plt.plot(timeArr, fluxArr, '.')
+    % plt.xlabel("Time (days)")
+    % plt.ylabel("Flux")
+
+This should produce a plot like this Fig. 1 below. The dips every ~3.5 days are due to a 
+planet (Kepler-5b) passing in front of the star. Notice however that there is longer term
+variation in the flux of the star itself - i.e., its flux is not constant, and the noise
+(scatter around the average) is not white (the average is moving - i.e., there is some 
+kind of 1/f noise).
+
+![alt text](../blob/master/figs/fig1.png "Figure 1")
+
+The `loadLightCurve` function has an option to normalise and whiten the data (i.e., 
+flatten out the varying flux of the star to make it easier to find the transits due to 
+the planet). It does this by dividing the light curve through by a running median. Let's
+try that (after closing the previous plot): 
+
+    % timeArr, fluxArr, fluxErrArr=lct.loadLightCurve(8191672, whiten = True) 
+    % plt.plot(timeArr, fluxArr, '.')
+    % plt.xlabel("Time (days)")
+    % plt.ylabel("Normalised Flux")
+
 Fig. 2 shows the result that you should get. 
 
 You can see this looks much more like the idealised plots / animations in the lecture slides that show the flux from the star to be constant, only dipping when the planet passes in front of it. This will be much easier to fit with a simple model than the unwhitened, non-normalised data. 

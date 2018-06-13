@@ -49,18 +49,39 @@ Git stores its data in a hidden folder called .git - to see this, you must use t
     % ls -a
     > . .. .git 
 
-The `git status` command tells you whether you have uncommitted changes to your repository (or not), and what branch you are on. We'll discuss why branches are useful later - "master" here is the default. 
-% git status
-> On branch master
-> 
-> Initial commit
->
-> nothing to commit (create/copy files and use "git add" to track) ```
+The `git status` command tells you whether you have uncommitted changes to your repository
+(or not), and what branch you are on. We'll discuss why branches are useful later - 
+"master" here is the default. 
 
-Unsurprisingly, this tells us our repository is empty. Let's add some files. We're going to use this repository to hold a Python application that will download, plot, and fit light curve data from the Kepler satellite. This exercise could be done in an IPython/Jupyter notebook file, but we're going to set it up as a full blown Python application, to show how you would do that. Why? Because if you eventually end up analysing big data sets, you won't be running them in IPython notebooks. In this case, we may eventually want to run this code in parallel on thousands of light curves at the same time, on a cluster using MPI. 
-We will follow a pretty standard layout for a Python project. First, let's add a README file that says what our project will do. Following github, we will actually use a file called README.md, where the extension indicates this is a Markdown file (e.g., https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet) file. As the name suggests, Markdown is a simple plain text mark-up language (the most famous example of a mark-up language is HTML used in web pages). A handy tool for checking how your Markdown will look when rendered by a web browser can be found here: http://tmpvar.com/markdown.html.
-You can create the README.md file in your favourite text editor (I use Kate and vim) - just be sure to save it in your planethunter/ directory. You can fill it with anything (we can edit it later), but here is a suggestion: 
+    % git status
+    > On branch master
+    > 
+    > Initial commit
+    >
+    > nothing to commit (create/copy files and use "git add" to track) ```
 
+Unsurprisingly, this tells us our repository is empty. Let's add some files. We're going
+to use this repository to hold a Python application that will download, plot, and fit 
+light curve data from the Kepler satellite. This exercise could be done in an 
+IPython/Jupyter notebook file, but we're going to set it up as a full-blown Python 
+application, to show how you would do that. Why? Because if you eventually end up 
+analysing big data sets, you won't be running them in IPython notebooks... e.g., in this
+case, we might eventually want to run the code in parallel on thousands of light curves
+at the same time, on a cluster using MPI. 
+
+We will follow a pretty standard layout for a Python project. First, let's add a README
+file that says what our project will do. Following Github, we will actually use a file 
+called `README.md`, where the extension indicates this is a Markdown file (e.g., 
+https://github.com/adam-p/markdown-here/wiki/Markdown-Cheatsheet). As the name suggests, 
+Markdown is a simple plain text mark-up language (the most famous example of a mark-up 
+language is HTML used in web pages). A handy tool for checking how your Markdown will 
+look when rendered by a web browser can be found here: http://tmpvar.com/markdown.html
+(this is specifically aimed at usage on Github). You can create the `README.md` file in 
+your favourite text editor (I use Kate and vim) - just be sure to save it in your 
+`planethunter/` directory. You can fill it with anything (we can edit it later), but 
+here is a suggestion: 
+
+```markdown
 # Planethunter 
 A code for fetching Kepler light curve data, plotting it, and 
 (eventually) fitting it with a planetary transit model. 
@@ -77,24 +98,36 @@ How to run
 
 ## Comments, bug reports, suggestions etc. 
 Please contact...
- 
+```
+
 [if you want to do this using vim: 
-% vim README.md 
-Then press the 'i' key to enable editing, and copy and paste in the above text ('Ctrl-V' or 'shift-insert'). Press 'Esc' to exit editing mode, then type ':x' to save. If you want to quit vim without saving, type ':q!']
-Now let's add our README.md file to the repository 
-% git add README.md 
+
+    % vim README.md 
+
+Then press the 'i' key to enable editing, and copy and paste in the above text ('Ctrl-V' 
+or 'shift-insert'). Press 'Esc' to exit editing mode, then type ':x' to save. If you 
+want to quit vim without saving, type ':q!']
+
+Now let's add our `README.md` file to the repository 
+
+    % git add README.md 
+
 Now, when you use the git status command, it reports that there are changes to check in: 
-% git status
-> On branch master
-> 
-> Initial commit
-> 
-> Changes to be committed:
-> (use "git rm --cached <file>..." to unstage)
->
-> new file: README.md 
+
+    % git status
+    > On branch master
+    > 
+    > Initial commit
+    > 
+    > Changes to be committed:
+    > (use "git rm --cached <file>..." to unstage)
+    >
+    > new file: README.md 
+
 Our changes are only saved to the repository once we commit them. We can do this by: 
-% git commit -m "Added README.md file" 
+
+    % git commit -m "Added README.md file" 
+
 Here the -m switch is followed by a message. Alternatively you can commit changes with git commit -a, which will then open a text editor (vim is the default, but this can be changed) in which you can type your commit message. Either way, this allows you to keep track of the changes you made between each revision of the files in the repository. You can see these by doing 
 % git log
 > commit 47d7d7f1af97f23e1530114c9c5375e032a935db

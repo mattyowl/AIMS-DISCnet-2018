@@ -564,6 +564,7 @@ variation in the flux of the star itself - i.e., its flux is not constant, and t
 kind of 1/f noise).
 
 ![alt text](figs/fig1.png "Figure 1")
+**Fig. 1** Light curve for KIC 008191672 (Kepler flux measurements).
 
 The `loadLightCurve` function has an option to normalise and whiten the data (i.e., 
 flatten out the varying flux of the star to make it easier to find the transits due to 
@@ -577,12 +578,30 @@ try that (after closing the previous plot):
 
 Fig. 2 shows the result that you should get. 
 
-You can see this looks much more like the idealised plots / animations in the lecture slides that show the flux from the star to be constant, only dipping when the planet passes in front of it. This will be much easier to fit with a simple model than the unwhitened, non-normalised data. 
-If everything is working as expected, now would be the time to commit your changes to the git repository.
-Making the planethunter executable useful - command line options
-We now have a usable lightCurveTools module - let's apply it to the planethunter script that the user of our package can run. Here we'll look at adding command line options, so that the user can use the script to download and plot a Kepler light curve, with or without the normalisation/whitening applied. 
-The first thing to do is delete the message we had in there before. We'll then use the argparse module to handle the command line interface (this is fancy; you could also use plain sys.argv if you wanted - but a nice feature of the argparse module is that if the user runs a program with the -h flag, it will print a help message). So, the script should now start like this: 
+![alt text](figs/fig2.png "Figure 2")
+**Fig. 2** Normalised and whitened light curve for KIC 8191672.
 
+You can see this looks much more like the idealised plots / animations in the lecture
+slides that show the flux from the star to be constant, only dipping when the planet 
+passes in front of it. This will be much easier to fit with a simple model than the 
+unwhitened, non-normalised data. 
+
+If everything is working as expected, now would be the time to commit your changes to the
+git repository.
+
+## Making the planethunter executable useful - command line options
+We now have a usable `lightCurveTools` module - let's apply it to the `planethunter` 
+script that the user of our package can run. Here we'll look at adding command line 
+options, so that the user can use the script to download and plot a Kepler light curve,
+with or without the normalisation/whitening applied.
+
+The first thing to do is delete the message we had in there before. We'll then use the
+`argparse` module to handle the command line interface (this is fancy; you could also use
+plain `sys.argv` if you wanted - but a nice feature of the `argparse` module is that if
+the user runs a program with the `-h` flag, it will print a help message). So, the script
+should now start like this: 
+
+```python
 #!/usr/bin/env python3
 """
 
@@ -607,18 +626,41 @@ if __name__ == '__main__':
     try:
         KICID=int(args.KICID)
     except:
-        print("Error - KICID must be a number")
+        print("Error - KICID must be a number!")
         sys.exit()
+```
 
-Notice that we check the user's input in the try... except... block, and instead of throwing an exception, we just print a message and exit. There is no real reason to do this, other than this shows to the user that they entered an invalid value in a fairly friendly way (if we just let it throw the Python exception, the user may instead think that there is a bug in the code). 
-After you install the updated code (using the setup.py script again), you will now find that you can run the planethunter script like this  (don't do this in the directory that holds your git repository): 
-% planethunter 8191672 
-The example code above shows you how to access the arguments that have been passed into your program. Now extend the code so that it uses the routines in your lightCurveTools module to load and plot a light curve (like we did using IPython in the section above). For now, perhaps just make the code save the plot as 'plot.png' in your current directory. 
-For the whiten switch (-w), you will find that args.whiten is True when the user runs e.g. 
-% planethunter 8191672 -w 
-and that args.whiten = False otherwise. Adapt your code accordingly, such that the user gets a light curve plot that is either normalised and whitened, or not, depending on whether they used the -w switch or not. 
-Once you are happy with the results (compare them to Fig. 1 and Fig. 2), commit your changes to the repository. 
-Git branches
+Notice that we check the user's input in the `try... except...` block, and instead of 
+throwing an exception, we just print a message and exit. There is no real reason to do
+this, other than this shows to the user that they entered an invalid value in a fairly
+friendly way (if we just let it throw the Python exception, the user may instead think
+that there is a bug in the code).
+
+After you install the updated code (using the `setup.py` script again), you will now
+find that you can run the `planethunter` script like this (don't do this in the directory
+that holds your git repository): 
+
+    % planethunter 8191672 
+
+The example code above shows you how to access the arguments that have been passed into
+your program. Now extend the code so that it uses the routines in your `lightCurveTools`
+module to load and plot a light curve (like we did using IPython in the section above). 
+For now, perhaps just make the code save the plot as 'plot.png' in your current 
+directory. 
+
+For the whiten switch (`-w`), you will find that `args.whiten` is `True` when the user 
+runs e.g. 
+
+    % planethunter 8191672 -w 
+
+and that `args.whiten = False` otherwise. Adapt your code accordingly, such that the 
+user gets a light curve plot that is either normalised and whitened, or not, depending on
+whether they used the `-w` switch or not.
+
+Once you are happy with the results (compare them to Fig. 1 and Fig. 2), commit your 
+changes to the repository. 
+
+## Git branches
 Now would be a good time to start thinking about how to fit the data. For the sake of this exercise, we're going to do this on a new branch in our git repository. After creating and switching to a new branch, changes committed in our new branch will not be reflected in the master branch that we have been using so far. Once we are satisfied with our new branch, at a later stage we can then merge those changes into the master branch.
 Branches are particularly useful if several people are working on (or using) the same repository. For example, one person could open a new branch in order to fix a bug in one part of the code, while others could continue working in a different branch independently. Later on, they can merge their changes together in the master branch. 
 Another example would be the case where you want to make a major change to how the code works. Say you had a Python 2.x application and had made the descision to port to Python 3.x - a natural way to do this would be to start a python3 branch, make all the necessary changes, and then merge this back into master once complete and tested.

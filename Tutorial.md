@@ -860,12 +860,43 @@ In terms of `git`, we have not touched on interacting with remote repositories, 
 hosted by github. You would do this with the `git push` and `git pull` commands. You
 would modify your typical workflow to something like:
 
-    % git commit -m "Some comment on the commit"
+    % git commit -a
+    > [master bcc5fd5] The comment that was entered to describe the commit
+    > 1 file changed, 178 insertions(+), 76 deletions(-)
+    
     % git push
+    > Username for 'https://github.com': username
+    > Password for 'https://username@github.com': 
+    > Counting objects: 3, done.
+    > Delta compression using up to 4 threads.
+    > Compressing objects: 100% (3/3), done.
+    > Writing objects: 100% (3/3), 2.14 KiB | 0 bytes/s, done.
+    > Total 3 (delta 1), reused 0 (delta 0)
+    > remote: Resolving deltas: 100% (1/1), completed with 1 local object.
+    > To https://github.com/mattyowl/AIMS-DISCnet-2018.git
+    >    f01c7f1..bcc5fd5  master -> master
 
 After you `commit` changes, they are stored in your local repository. The `push` command
 is needed to make them reflect on the remote repository (you are sending them 
 "upstream").
+
+If you want to get a copy of a remote repository onto your machine, you can use the 
+`git clone` command, e.g.,
+
+    % git clone https://github.com/mattyowl/AIMS-DISCnet-2018.git
+    > Cloning into 'AIMS-DISCnet-2018'...
+    > remote: Counting objects: 38, done.
+    > remote: Compressing objects: 100% (28/28), done.
+    > remote: Total 38 (delta 9), reused 35 (delta 9), pack-reused 0
+    > Unpacking objects: 100% (38/38), done.
+    > Checking connectivity... done.
+
+would clone this repository. The big green button near the top of every Github page gives
+you the link needed for the `git clone` command.
+
+If later on there are changes made to the remote repository (hosted on Github), you can
+fetch those changes and update your local copy by using the `git pull` command:
+
 
 
 - see this tutorial, for example: https://swcarpentry.github.io/git-novice/. Github itself also has excellent documentation.

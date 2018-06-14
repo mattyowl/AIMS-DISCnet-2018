@@ -3,7 +3,7 @@
 ### Matt Hilton - University of KwaZulu-Natal
 
 This tutorial will take you through the process of setting up a command-line based Python
-application that any user can install, using git for version control. Here, we develop a
+application that any user can install, using `git` for version control. Here, we develop a
 code that can download light curve data obtained by the Kepler Space Telescope, in which
 we will search for signs of transiting extrasolar planets.
 
@@ -38,7 +38,7 @@ Move into the directory when you're done.
     % mkdir planethunter
     % cd planethunter
 
-Now let's make the bare repository by using the git init command:
+Now let's make the bare repository by using the `git init` command:
 
     % git init
     > Initialized empty Git repository in /home/matty/Documents/Teaching/ZA-DISCnet-2018/planethunter/.git/ 
@@ -65,7 +65,7 @@ to use this repository to hold a Python application that will download, plot, an
 light curve data from the Kepler satellite. This exercise could be done in an 
 IPython/Jupyter notebook file, but we're going to set it up as a full-blown Python 
 application, to show how you would do that. Why? Because if you eventually end up 
-analysing big data sets, you won't be running them in IPython notebooks... e.g., in this
+analysing big data sets, you won't be running them in IPython notebooks -  e.g., in this
 case, we might eventually want to run the code in parallel on thousands of light curves
 at the same time, on a cluster using MPI. 
 
@@ -100,7 +100,7 @@ How to run
 Please contact...
 ```
 
-[if you want to do this using vim: 
+[if you want to do this using `vim`: 
 
     % vim README.md 
 
@@ -112,7 +112,7 @@ Now let's add our `README.md` file to the repository
 
     % git add README.md 
 
-Now, when you use the git status command, it reports that there are changes to check in: 
+Now, when you use the `git status` command, it reports that there are changes to check in: 
 
     % git status
     > On branch master
@@ -129,7 +129,7 @@ Our changes are only saved to the repository once we commit them. We can do this
     % git commit -m "Added README.md file" 
 
 Here the `-m` switch is followed by a message. Alternatively you can commit changes
-with git commit `-a`, which will then open a text editor (vim is the default, but 
+with `git commit -a`, which will then open a text editor (`vim` is the default, but 
 this can be changed) in which you can type your commit message. Either way, this 
 allows you to keep track of the changes you made between each revision of the files
 in the repository. You can see these by doing 
@@ -166,8 +166,8 @@ Directories:
 Files:
 
 * `bin/planethunter` [this will be our executable (python) script that the user of our application runs]
-* `planethunter/__init__.py` [note the double underscore `__`]
-* `planethunter/lightCurveTools.py` [eventually this will contain code for reading and plotting light curves]
+* `planethunter/__init__.py` [note the double underscores `__`]
+* `planethunter/lightCurveTools.py` [eventually this will contain code for reading and processing light curves]
 * `setup.py` [this will be the install script for our Python application]
 * `MANIFEST.in` [this is a file that will be used by the `setup.py` script later]
 * `README.md` [you should have already made this one - see above] 
@@ -196,10 +196,10 @@ finds the location of the `python3` interpreter on the system and executes it (b
 convention, `/usr/bin/env python` should find and execute the Python 2.x interpreter - 
 we aren't using that for this exercise, but it ought to also work).
  
-The text inside the triple quotes `""" """` is a docstring. You should use these 
-extensively to document your code, in particular for functions and classes (we will 
-return to this later). Docstrings are what you see when you use the `help` command 
-inside the `python3` or `ipython` interpreter.
+The text inside the triple quotes `""" """` is a [docstring](https://en.wikipedia.org/wiki/Docstring). 
+You should use these extensively to document your code, in particular for functions
+and classes (we will return to this later). Docstrings are what you see when you use
+the `help` command inside the `python3` or `ipython` interpreter.
  
 ### `planethunter/__init__.py`
 This initializes the planethunter python package, and allows sub-directories (which
@@ -245,7 +245,7 @@ it is usually handled by the [`setuptools` package](https://setuptools.readthedo
 The `setup.py` script is very powerful, and can be made to, e.g., compile and build C 
 extensions from source code. It can even handle and install dependencies (via `pip`; 
 https://pypi.org/project/pip/). For now, let's just put in the most basic thing we can, 
-which is suitable for a pure python package like Planethunter: 
+which is suitable for a pure Python package like Planethunter: 
 
 ```python
 # Planethunter install script 
@@ -264,6 +264,12 @@ setup(name='planethunter',
       scripts=['bin/planethunter'], 
 )
 ```
+
+By including 'planethunter' in the `packages` list, all of the .py files that we 
+place inside the `planethunter/` directory will be installed when we run the 
+`setup.py` script (see below). Similarly, the files pointed to by the `scripts` 
+list will be installed in the appropriate place for your system, depending upon the
+options you use when running the `setup.py` script.
 
 Now commit these changes to your `git` repository, remembering to add the files first
 (use `git status` to check that you have done so, if you're unsure).
@@ -320,7 +326,7 @@ repository while we're at it.
 The only reason to make this file at this stage is because we've used a non-standard name
 for the README file. You can use `MANIFEST.in` to include other directories or content in
 the source archive that will be built by `setup.py` (in a moment) that isn't specified in
-the setup.py file itself (e.g., a directory containing documentation or examples of how 
+the `setup.py` file itself (e.g., a directory containing documentation or examples of how 
 to use your code). For now, just paste in:
 
 ```
@@ -598,10 +604,11 @@ options, so that the user can use the script to download and plot a Kepler light
 with or without the normalisation/whitening applied.
 
 The first thing to do is delete the message we had in there before. We'll then use the
-`argparse` module to handle the command line interface (this is fancy; you could also use
-plain `sys.argv` if you wanted - but a nice feature of the `argparse` module is that if
-the user runs a program with the `-h` flag, it will print a help message). So, the script
-should now start like this: 
+[`argparse`](https://docs.python.org/3.6/library/argparse.html#module-argparse) module 
+to handle the command line interface (this is fancy; you could also use
+plain [`sys.argv`](https://docs.python.org/3/library/sys.html) if you wanted - but a
+nice feature of the `argparse` module is that if the user runs a program with the
+`-h` flag, it will print a help message). So, the script should now start like this: 
 
 ```python
 #!/usr/bin/env python3
@@ -891,8 +898,8 @@ If you want to get a copy of a remote repository onto your machine, you can use 
     > Unpacking objects: 100% (38/38), done.
     > Checking connectivity... done.
 
-would clone this repository. The big green button near the top of every Github page gives
-you the link needed for the `git clone` command.
+would clone this repository. The big green button near the top of every Github 
+repository page gives you the link needed for the `git clone` command.
 
 If later on there are changes made to the remote repository (hosted on Github), you can
 fetch those changes and update your local copy by using the `git pull` command:
@@ -908,6 +915,8 @@ fetch those changes and update your local copy by using the `git pull` command:
     > Fast-forward
     >  Tutorial.md | 33 ++++++++++++++++++++++++++++++++-
     >  1 file changed, 32 insertions(+), 1 deletion(-)
+
+Here, your local repository is said to be "downstream" from the remote repository.
 
 For a full `git` tutorial, see <https://swcarpentry.github.io/git-novice/>. Github itself 
 also provides good documentation.

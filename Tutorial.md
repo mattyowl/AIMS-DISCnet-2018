@@ -25,7 +25,7 @@ should (usually) be copied and pasted into files where appropriate, as explained
 
 ## Getting started with git
 If this is the first time you've used git, you may want to set these options - these 
-would be used across all repositories (e.g., those on github, gitlab, sourceforge, etc.,
+would be used across all repositories (e.g., those on Github, Gitlab, Sourceforge, etc.,
 as well as locally on your machine). For example,
 
     % git config --global user.name "Your Name"
@@ -857,7 +857,7 @@ This kind of plot is so useful, that you should probably add a routine that does
 There are many topics that we haven't covered in this tutorial. 
 
 In terms of `git`, we have not touched on interacting with remote repositories, such as
-hosted by github. You would do this with the `git push` and `git pull` commands. You
+hosted by Github. You would do this with the `git push` and `git pull` commands. You
 would modify your typical workflow to something like:
 
     % git commit -a
@@ -897,20 +897,42 @@ you the link needed for the `git clone` command.
 If later on there are changes made to the remote repository (hosted on Github), you can
 fetch those changes and update your local copy by using the `git pull` command:
 
+    % git pull
+    > remote: Counting objects: 3, done.
+    > remote: Compressing objects: 100% (2/2), done.
+    > remote: Total 3 (delta 1), reused 3 (delta 1), pack-reused 0
+    > Unpacking objects: 100% (3/3), done.
+    > From https://github.com/mattyowl/AIMS-DISCnet-2018
+    >    bcc5fd5..a06c61d  master     -> origin/master
+    > Updating bcc5fd5..a06c61d
+    > Fast-forward
+    >  Tutorial.md | 33 ++++++++++++++++++++++++++++++++-
+    >  1 file changed, 32 insertions(+), 1 deletion(-)
 
+For a full `git` tutorial, see <https://swcarpentry.github.io/git-novice/>. Github itself 
+also provides good documentation.
 
-- see this tutorial, for example: https://swcarpentry.github.io/git-novice/. Github itself also has excellent documentation.
-We also haven't touched on reverting changes to your repository. You can find a handy guide for doing that kind of thing here: https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things
-In terms of the planethunter code itself, here are some other things that you could investigate:
-Running the code on light curves of other stars
-Stitching together multiple light curve files for the same star (each individual .fits file covers 90 days) to look for longer period planets
-Multi-planet systems (the model above only includes a single planet)
-Planets around binary stars (where two stars themselves eclipse each other)
-Running the code in parallel on many light curves at the same time (e.g., using MPI)
-Useful links
-Pro Git: https://git-scm.com/book/en/v2 [a full book on git, with a Creative Commons license]
-The Python Standard Library: https://docs.python.org/3/library/index.html
-Documentation for the scipy.optimize module: https://docs.scipy.org/doc/scipy/reference/optimize.html [one option for fitting]
-Kepler objects of interest: https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=cumulative [the kepID column has the KIC number you would need to download the light curve with our code]
-Information on Kepler data products: http://keplerscience.arc.nasa.gov/data-products.html
-The manual for the Kepler data archive products: http://archive.stsci.edu/kepler/manuals/archive_manual.pdf [read this if you want details on the processing that was done to the light curve data that we are using]
+We also haven't touched on reverting changes to your repository. You can find a handy 
+guide for doing that kind of thing here: 
+<https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things>
+
+In terms of the `planethunter` code, here are some other things that you could investigate:
+
+* Running the code on light curves of other stars (see links at the bottom for where to 
+  get KIC ID numbers to try)
+* Stitching together multiple light curve files for the same star (each individual .fits
+  file covers 90 days) to look for longer period planets
+* Multi-planet systems (the model above only includes a single planet)
+* Planets around binary stars (where two stars themselves eclipse each other)
+* Running the code in parallel on many light curves at the same time (e.g., using MPI)
+
+## Useful links
+
+* Pro Git: <https://git-scm.com/book/en/v2> [a full book on git, with a Creative Commons license]
+* The Python Standard Library: <https://docs.python.org/3/library/index.html>
+* Documentation for the `scipy.optimize` module: <https://docs.scipy.org/doc/scipy/reference/optimize.html> [one option for fitting]
+* Kepler objects of interest: <https://exoplanetarchive.ipac.caltech.edu/cgi-bin/TblView/nph-tblView?app=ExoTbls&config=cumulative>
+  [the kepID column has the KIC number you would need to download the light curve with our code]
+* Information on Kepler data products: <http://keplerscience.arc.nasa.gov/data-products.html>
+* The manual for the Kepler data archive products: <http://archive.stsci.edu/kepler/manuals/archive_manual.pdf>
+  [read this if you want details on the processing that was done to the light curve data that we are using]

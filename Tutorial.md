@@ -937,6 +937,7 @@ In terms of the `planethunter` code, here are some other things that you could i
 
 ## Useful links
 
+* Git cheat sheet: <https://services.github.com/on-demand/downloads/github-git-cheat-sheet.pdf> [one of many available]
 * Pro Git: <https://git-scm.com/book/en/v2> [a full book on git, with a Creative Commons license]
 * The Python Standard Library: <https://docs.python.org/3/library/index.html>
 * Documentation for the `scipy.optimize` module: <https://docs.scipy.org/doc/scipy/reference/optimize.html> [one option for fitting]

@@ -51,7 +51,7 @@ Git stores its data in a hidden folder called .git - to see this, you must use t
 
 The `git status` command tells you whether you have uncommitted changes to your repository
 (or not), and what branch you are on. We'll discuss why branches are useful later - 
-"master" here is the default. 
+_master_ here is the default. 
 
     % git status
     > On branch master
@@ -663,31 +663,61 @@ Once you are happy with the results (compare them to Fig. 1 and Fig. 2), commit 
 changes to the repository. 
 
 ## Git branches
-Now would be a good time to start thinking about how to fit the data. For the sake of this exercise, we're going to do this on a new branch in our git repository. After creating and switching to a new branch, changes committed in our new branch will not be reflected in the master branch that we have been using so far. Once we are satisfied with our new branch, at a later stage we can then merge those changes into the master branch.
-Branches are particularly useful if several people are working on (or using) the same repository. For example, one person could open a new branch in order to fix a bug in one part of the code, while others could continue working in a different branch independently. Later on, they can merge their changes together in the master branch. 
-Another example would be the case where you want to make a major change to how the code works. Say you had a Python 2.x application and had made the descision to port to Python 3.x - a natural way to do this would be to start a python3 branch, make all the necessary changes, and then merge this back into master once complete and tested.
-To create a new branch, we use the git checkout command with the -b argument:
-% git checkout -b fitting
-> Switched to a new branch 'fitting' 
-If you're ever unsure what branch you are currently on, you can use the git status command:
-% git status
-> On branch fitting
-> Untracked files:
->   (use "git add <file>..." to include in what will be committed)
-> 
->         MANIFEST
->         build/
->         dist/
-> 
-> nothing added to commit but untracked files present (use "git add" to track)
-Now if we use git commit, our changes will reflect on the fitting branch, but not on master. You can switch between branches using the git checkout command, e.g.,
-% git checkout master
-> Switched to branch 'master'
-% git checkout fitting
-> Switched to branch 'fitting'
-Make sure you are back on the fitting branch before continuing.
-One way to detect exoplanets is to fit a model for a transiting object to the light curve data. When the planet is in front of the star, the flux from the star dips - otherwise, we can assume that the flux from the star is constant (not all stars, nor our data, necessarily behave this way - but the normalising and whitening step in our loadLightCurve routine makes this so for at least KIC 8191672). So, a reasonable model to try would be one in which the flux immediately dips when a transit occurs, but is 1 otherwise. The following code describes such a model:
+Now would be a good time to start thinking about how to fit the data. For the sake of
+this exercise, we're going to do this on a new branch in our git repository. After
+creating and switching to a new branch, changes committed in our new branch will not
+be reflected in the _master_ branch that we have been using so far. Once we are satisfied
+with our new branch, at a later stage we can then merge those changes into the _master_ branch.
 
+Branches are particularly useful if several people are working on (or using) the same
+repository. For example, one person could open a new branch in order to fix a bug in one
+part of the code, while others could continue working in a different branch 
+independently. Later on, they can merge their changes together in the _master_ branch.
+
+Another example would be the case where you want to make a major change to how the code
+works. Say you had a Python 2.x application and had made the descision to port to 
+Python 3.x - a natural way to do this would be to start a python3 branch, make all the
+necessary changes, and then merge this back into _master_ once complete and tested.
+
+To create a new branch, we use the `git checkout` command with the `-b` argument:
+
+    % git checkout -b fitting
+    > Switched to a new branch 'fitting' 
+
+If you're ever unsure which branch you are currently on, you can use the `git status`
+command:
+
+    % git status
+    > On branch fitting
+    > Untracked files:
+    >   (use "git add <file>..." to include in what will be committed)
+    > 
+    >         MANIFEST
+    >         build/
+    >         dist/
+    > 
+    > nothing added to commit but untracked files present (use "git add" to track)
+
+Now if we use `git commit`, our changes will reflect on the _fitting_ branch, but not on
+_master_. You can switch between branches using the `git checkout` command, e.g.,
+
+    % git checkout master
+    > Switched to branch 'master'
+    
+    % git checkout fitting
+    > Switched to branch 'fitting'
+
+Make sure you are back on the _fitting_ branch before continuing.
+
+One way to detect exoplanets is to fit a model for a transiting object to the light curve
+data. When the planet is in front of the star, the flux from the star dips - otherwise, 
+we can assume that the flux from the star is constant (not all stars, nor our data, 
+necessarily behave this way - but the normalising and whitening step in our 
+`loadLightCurve` routine makes this so for at least KIC 8191672). So, a reasonable model
+to try would be one in which the flux immediately dips when a transit occurs, but is 1
+otherwise. The following code describes such a model:
+
+```python
 def dipModel(t, p, t0, d, f0):
     """A simple model of the dip in a light curve caused by a transit. Assumes
     that the light curve that we would fit this to has been whitened and
@@ -716,57 +746,129 @@ def dipModel(t, p, t0, d, f0):
     
     return modelFlux
 
-Note that we didn't specify any units in the docstring - but p, t0, d would all be in units of days, if we feed in timeArr from one of our Kepler light curves.
-Add the above routine to your code: you can choose where you want to put it. You could add it to lightCurveTools, or you could add a new module (called, e.g., fitTools - if so, remember to also update __init__.py). The choice is yours.
-To test it out, you can try the following in an IPython session (assuming you are in the same directory as KeplerCache/) - adjust this according to where you decided to place the dipModel routine:
-% from planethunter import lightCurveTools as lct
-% from planethunter import fitTools
-% timeArr, fluxArr, fluxErrArr=lct.loadLightCurve(8191672, whiten = True)
-% import pylab as plt
-% plt.ion()
-% plt.plot(timeArr, fluxArr, '.')
-% plt.plot(timeArr, fitTools.dipModel(timeArr, 3.5485, 353.55, 0.5, 0.993), 'k-')
-In the last line, we've dialed in the known period for the planet Kepler-5b, and read off the values for t0, f0 from looking at the data (the value for d is just a guess). This should give you a plot like Fig. 3 below.
-If you are happy that your code is correct and works as expected, commit your changes to the repository (remembering to git add any new files first, e.g., fitTools.py, if you created them).
-% git commit -a
-> [fitting 77ae77d] Added fitTools.py with simple dip model.
-> 2 files changed, 39 insertions(+)
-> create mode 100644 planethunter/fitTools.py
-Suppose we're sufficiently happy with our progress on the fitting branch, and want to merge the changes into the master branch. This is how we would do that:
-% git checkout master
-> Switched to branch 'master'
-% git merge fitting
-> Updating 556f5f2..77ae77d
-> Fast-forward
->  planethunter/__init__.py |  2 ++
->  planethunter/fitTools.py | 37 +++++++++++++++++++++++++++++++++++++
->  2 files changed, 39 insertions(+)
->  create mode 100644 planethunter/fitTools.py
-Your master and fitting branches now contain the same code. Switch back to the fitting branch before continuing by doing
-> git checkout fitting
-> Switched to branch 'fitting'
+```
+
+Note that we didn't specify any units in the docstring - but `p`, `t0`, `d` would all be 
+in units of days, if we feed in timeArr from one of our Kepler light curves.
+
+Add the above routine to your code: you can choose where you want to put it. You could 
+add it to `lightCurveTools`, or you could add a new module (called, e.g., `fitTools` - if
+so, remember to also update `__init__.py`). The choice is yours.
+
+To test it out, you can try the following in an IPython session (assuming you are in the 
+same directory as `KeplerCache/` - otherwise you'll have to fetch the data again) - 
+adjust this according to where you decided to place the `dipModel` routine:
+
+    % from planethunter import lightCurveTools as lct
+    % from planethunter import fitTools
+    % timeArr, fluxArr, fluxErrArr=lct.loadLightCurve(8191672, whiten = True)
+    % import pylab as plt
+    % plt.ion()
+    % plt.plot(timeArr, fluxArr, '.')
+    % plt.plot(timeArr, fitTools.dipModel(timeArr, 3.5485, 353.55, 0.5, 0.993), 'k-')
+
+In the last line, we've dialed in the known period for the planet Kepler-5b, and read off
+the values for `t0`, `f0` from looking at the data (the value for `d` is just a guess). 
+This should give you a plot like Fig. 3 below.
+
+![alt text](figs/fig3.png "Figure 3")
+
+**Fig. 3** Light curve for KIC 8191672, with a dip model overlaid with period that matches Kepler-5b.
+
+You may find when trying to fit the data that the parametrisation used in `dipModel` above
+is not the best; it may be better to replace `t0` (the time of the centre of a transit) to
+a fractional _phase shift_ parameter, defined from 0...1, where an oribital period for the
+planet starts at phase = 0 and returns to the same place at phase = 1.
+
+When you are happy that your code is correct and works as expected, commit your changes to
+the repository (remembering to `git add` any new files first, e.g., `fitTools.py`, if you 
+created them).
+
+    % git commit -a
+    > [fitting 77ae77d] Added fitTools.py with simple dip model.
+    > 2 files changed, 39 insertions(+)
+    > create mode 100644 planethunter/fitTools.py
+
+Suppose we're sufficiently happy with our progress on the _fitting_ branch, and want to 
+merge the changes into the _master_ branch. This is how we would do that:
+
+    % git checkout master
+    > Switched to branch 'master'
+    % git merge fitting
+    > Updating 556f5f2..77ae77d
+    > Fast-forward
+    >  planethunter/__init__.py |  2 ++
+    >  planethunter/fitTools.py | 37 +++++++++++++++++++++++++++++++++++++
+    >  2 files changed, 39 insertions(+)
+    >  create mode 100644 planethunter/fitTools.py
+
+Your master and fitting branches now contain the same code. Switch back to the fitting 
+branch before continuing by doing
+
+    > git checkout fitting
+    > Switched to branch 'fitting'
+
+## Fitting the data
+You should now feel free to experiment with applying what you have learned in the 
+previous couple of days to actually fitting a model to the light curve data. This may not
+be easy... an obvious place to start would be to try &chi;<sup>2</sup> minimisation or
+perhaps MCMC (e.g., using `emcee` <https://pypi.org/project/emcee/>; if anyone gets the
+latter to find the period successfully, let me know... one thing you will probably want
+to change first is to fit for a fractional phase offset rather than `t0`). See if you can
+add routines to the `planethunter` script and/or the other modules in the package to fit
+light curve data and find at least the period of the exoplanet, and perhaps report some
+statistic that indicates the goodness-of-fit. Before trying to automate it, you might 
+want to check your likelihood calculation by dialing in some values around the best-fit
+values of the parameters first (e.g., start by plotting &chi;<sup>2</sup> versus period).
+
+One other kind of plot that is useful for this project is the transit-centred light 
+curve. This plots flux against phase, such that it stacks the transit events on top of 
+one another. The code below shows how you can make this, if you have a best-fit model. 
+This example is just for the parameters we previously used in Fig. 3:
+
+```python
+p, t0, d, f0=3.5485, 353.55, 0.5, 0.993
+phase=timeArr/p
+phase=phase % 1
+phaseCentre=t0/p % 1
+phase=phase-phaseCentre
+modelPhase=np.linspace(-0.5, 0.5, 1000)
+modelFlux=fitTools.dipModel(modelPhase*p, p, 0, d, f0)
+plt.plot(phase, fluxArr, '.')
+plt.plot(modelPhase, modelFlux, 'k-')
+plt.xlim(-0.5, 0.5)
+plt.xlabel("Phase")
+plt.ylabel("Normalised Flux")
+
+```
+
+Fig. 4 shows how this should look - here we can clearly see that our guess for the value
+of `d` (the transit duration) was too large.
+
+![alt text](figs/fig4.png "Figure 4")
+
+**Fig. 4** Transit-centred phased light curve for KIC 8191672, with the model from Fig. 3
+overlaid.
+
+This kind of plot is so useful, that you should probably add a routine that does this to
+`planethunter`...
+
+## What next?
+There are many topics that we haven't covered in this tutorial. 
+
+In terms of `git`, we have not touched on interacting with remote repositories, such as
+hosted by github. You would do this with the `git push` and `git pull` commands. You
+would modify your typical workflow to something like:
+
+    % git commit -m "Some comment on the commit"
+    % git push
+
+After you `commit` changes, they are stored in your local repository. The `push` command
+is needed to make them reflect on the remote repository (you are sending them 
+"upstream").
 
 
-Fitting the data
-You should now feel free to experiment with applying what you have learned in the previous couple of days to actually fitting a model to the light curve data. An obvious place to start would be to try χ2 minimisation or perhaps MCMC (if anyone gets the latter to work, let me know... one thing you will probably want to change first is to fit for a phase offset rather than t0). See if you can add routines to the planethunter script and/or the other modules in the package to fit light curve data and find at least the period of the exoplanet, and report some statistic that indicates the goodness of fit. Before trying to automate it, you might want to check your likelihood calculation by dialing in some values around the best-fit values of the parameters first (e.g., plot χ2 versus period).
-One other kind of plot that is useful for this project is the transit-centred phased light curve. The code below shows how you can make this, if you have a best-fit model. This example is just for the parameters we previously used in Fig. 3:
-% p, t0, d, f0=3.5485, 353.55, 0.5, 0.993
-% phase=timeArr/p
-% phase=phase % 1
-% phaseCentre=t0/p % 1
-% phase=phase-phaseCentre
-% modelPhase=np.linspace(-0.5, 0.5, 1000)
-% modelFlux=fitTools.dipModel(modelPhase*p, p, 0, d, f0)
-% plt.plot(phase, fluxArr, '.')
-% plt.plot(modelPhase, modelFlux, 'k-')
-% plt.xlim(-0.5, 0.5)
-% plt.xlabel("Phase")
-% plt.ylabel("Normalised Flux")
-Fig. 4 shows how this should look - here we can clearly see that our guess for the value of d (the transit duration) was too large.
-
-This kind of plot is so useful, that you should probably add a routine that does this to planethunter...
-What next?
-There are many topics that we haven't covered in this tutorial. In terms of git, we have not touched on interacting with remote repositories, such as hosted by github. You would do this with the git push and git pull commands - see this tutorial, for example: https://swcarpentry.github.io/git-novice/. Github itself also has excellent documentation.
+- see this tutorial, for example: https://swcarpentry.github.io/git-novice/. Github itself also has excellent documentation.
 We also haven't touched on reverting changes to your repository. You can find a handy guide for doing that kind of thing here: https://git-scm.com/book/en/v2/Git-Basics-Undoing-Things
 In terms of the planethunter code itself, here are some other things that you could investigate:
 Running the code on light curves of other stars

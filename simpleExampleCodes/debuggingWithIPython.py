@@ -31,10 +31,10 @@ except ZeroDivisionError:
     print("Ignoring a divide by zero error ...")
 
 b="a"
-try:
-    c=divide(a, b)
-except:
-    print("This would have triggered a TypeError exception")
-    IPython.embed()
-    sys.exit()
+c=divide(a, b)
+
+#except:
+#    print("This would have triggered a TypeError exception")
+#    IPython.embed()
+#    sys.exit()
 
